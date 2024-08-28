@@ -5,7 +5,7 @@ editor: visual
 editor_options: 
   chunk_output_type: console
 ---
-# `dataRetrieval' 
+# `dataRetrieval' - USGS API
 The dataRetrieval package was created to simplify the process of loading hydrologic data into the R environment. It is designed to retrieve the major data types of U.S. Geological Survey (USGS) hydrologic data that are available on the Web. 
 
 
