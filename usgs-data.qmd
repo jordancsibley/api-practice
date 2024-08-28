@@ -1,0 +1,74 @@
+---
+title: "API Practice - Ventura River Time series"
+format: html
+editor: visual
+editor_options: 
+  chunk_output_type: console
+---
+# `dataRetrieval' 
+The dataRetrieval package was created to simplify the process of loading hydrologic data into the R environment. It is designed to retrieve the major data types of U.S. Geological Survey (USGS) hydrologic data that are available on the Web. 
+
+
+# Instructions 
+- Using `dataRetrieval` get the discharge (ft³/s) time-series for the Ventura River (site 11118500) during the recent Hilary tropical storm from 2023-08-19 to 2023-08-22
+
+
+```{r}
+library(tidyverse)
+library(dataRetrieval)
+```
+
+
+```{r}
+# Set parameters for the query 
+siteNumber <- "11118500"
+parameterCd <- "00060" # Discharge
+startDate <- "2023-08-19"
+endDate <- "2023-08-22"
+```
+
+
+```{r}
+# query the data 
+discharge <- readNWISdv(siteNumber, parameterCd, startDate, endDate)
+
+# USGS daily value qualification codes are often “A” (approved for publication) or “P” (provisional data subject to revision).
+```
+
+
+- Plot the time-series using ggplot2
+```{r}
+# Date and X_00060_00003
+# Discharge [ft3/s]
+
+ggplot(data = discharge, aes(x = discharge$Date, y = discharge$X_00060_00003)) +
+  geom_line() + 
+  geom_point() +
+  labs(x = "Date",
+       y = "Discharge [ft3/s]")
+```
+
+
+- What was the maximum discharge during this period of time?
+```{r}
+# need to query the data from that time period, this time finding maximum 
+# stat code 00001	Maximum
+
+siteNumber <- "11118500"
+parameterCd <- "00060" # Discharge
+statCd <- "00001" # maximum
+startDate <- "2023-08-19"
+endDate <- "2023-08-22"
+
+```
+
+```{r}
+maxdischarge <- readNWISdv(siteNumber, parameterCd,
+  startDate, endDate,
+  statCd = statCd
+)
+# no data available 
+# just to check i also included "00003" (mean) in the statCd and it did give that info. Just the max doesn't seem to work / have that avaliable data 
+```
+
+
